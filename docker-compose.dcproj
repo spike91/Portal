@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>761da5df-cd9a-4d9a-b109-e1a38ece6aab</ProjectGuid>
+    <ProjectGuid>f9bd65f0-06cd-49f8-aa7f-bbffee3c5f3d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>webspa</DockerServiceName>
