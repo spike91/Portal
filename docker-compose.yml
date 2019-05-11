@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  webspa:
+    image: ${DOCKER_REGISTRY-}webspa
+    build:
+      context: .
+      dockerfile: src/Web/WebSPA/Dockerfile
+
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: src/Services/Identity/Identity.Api/Dockerfile
+
+
+  news.api:
+    image: ${DOCKER_REGISTRY-}newsapi
+    build:
+      context: .
+      dockerfile: src/Services/News/News.Api/Dockerfile
+
