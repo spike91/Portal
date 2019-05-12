@@ -55,7 +55,7 @@ namespace News.Api
             }
 
             app.UseHttpsRedirection();
-            app.UseCors("CorsPolicy");
+            app.UseCors();
 
             app.UseMvcWithDefaultRoute();
 
