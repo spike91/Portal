@@ -1,15 +1,18 @@
-import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { DataService } from '../shared/services/data.service';
-import { ConfigurationService } from '../shared/services/configuration.service';
-import { IPost } from '../shared/models/post.model';
-
+﻿import { Injectable } from '@angular/core';
+import { IPost } from '../models/post.model';
+import { IPostItem } from '../models/postItem.model';
+import { DataService } from '../services/data.service';
+import { ConfigurationService } from '../services/configuration.service';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-@Injectable()
-export class NewsService {
-  private newsUrl: string = '';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SearchService {
+    private newsUrl: string = '';
 
     constructor(private service: DataService, private configurationService: ConfigurationService) {
         this.configurationService.settingsLoaded$.subscribe(x => {
@@ -17,10 +20,10 @@ export class NewsService {
         });
     }
 
-    getNews(pageIndex: number, pageSize: number): Observable<IPost> {
+    getNewsByTitle(text: number, size: number): Observable<IPostItem[]> {
         let url = this.newsUrl;
 
-        url = url + '?pageSize=' + pageSize + '&pageIndex=' + pageIndex;
+        url = url + '?search=' + text + '&size=' + size;
 
         return this.service.get(url)
             .pipe(
@@ -30,10 +33,10 @@ export class NewsService {
             );
     }
 
-    getNewsByTitle(title: string, pageIndex: number, pageSize: number): Observable<IPost> {
+    getNewsById(id: number): Observable<IPostItem> {
         let url = this.newsUrl;
 
-        url = url + '?pageSize=' + pageSize + '&pageIndex=' + pageIndex + '&title=' + title;
+        url = url + '?id=' + id;
 
         return this.service.get(url)
             .pipe(

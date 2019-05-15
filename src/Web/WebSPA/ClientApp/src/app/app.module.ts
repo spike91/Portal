@@ -7,12 +7,14 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AppService } from './app.service';
 import { NewsService } from './news/news.service';
+import { SearchService } from './shared/services/search.service';
 import { SharedModule } from './shared/shared.module';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { NewsComponent } from './news/news.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { NewsComponent } from './news/news.component';
     HomeComponent,
     CounterComponent,
       FetchDataComponent,
-    NewsComponent
+      NewsComponent,
+      SearchBarComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -29,12 +32,13 @@ import { NewsComponent } from './news/news.component';
       SharedModule.forRoot(),
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
-        { path: 'news', component: NewsComponent },
+      { path: 'news', component: NewsComponent },
+        { path: 'news/:title', component: NewsComponent },      
+      { path: '', component: HomeComponent, pathMatch: 'full' }
     ])
   ],
-    providers: [AppService, NewsService],
+    providers: [AppService, NewsService, SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
