@@ -1,0 +1,18 @@
+<form class="form-inline" (ngSubmit)="onSubmit()" #mainForm="ngForm" novalidate>
+    <input id="search" list="origList" class="form-control" autocomplete="off" placeholder="Search" (change)="searchChanged($event.target.value)"
+           (input)="postSearch($event.target.value)" [(ngModel)]="postStr"
+           minlength="3" maxlength="50" name="post" style="width:250px;height:28px;">
+    <span class="fa fa-search form-control-feedback"  style="padding-left:2px"></span>
+    <datalist id="origList">
+        <option *ngFor="let post of posts" [value]="post.id">
+            {{post.title}}
+        </option>
+    </datalist>
+    <!--<div class="form-border form-group col-md-offset-1 col-md-10 col-md-offset-1 inp" >
+
+
+    </div>-->
+    <!--<div class="col-md-offset-4 col-md-2 col-md-offset-6">
+        <button type="submit" value="Submit" [disabled]="!mainForm.form.valid" class="btn btn-border btn-lg btn-lglg">Submit</button>
+    </div>-->
+</form>
