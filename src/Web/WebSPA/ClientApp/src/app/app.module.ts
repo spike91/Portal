@@ -15,6 +15,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { NewsComponent } from './news/news.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { NewsDetailComponent } from './news-detail/news-detail.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     CounterComponent,
       FetchDataComponent,
       NewsComponent,
-      SearchBarComponent
+      SearchBarComponent,
+      NewsDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,8 +36,10 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     RouterModule.forRoot([
       { path: 'counter', component: CounterComponent },
       { path: 'news', component: NewsComponent },
-        { path: 'news/:title', component: NewsComponent },      
-      { path: '', component: HomeComponent, pathMatch: 'full' }
+        { path: 'news/search/:title', component: NewsComponent },      
+        { path: '', component: HomeComponent, pathMatch: 'full' },
+        { path: 'news/description/:id', component: NewsDetailComponent },
+        { path: '**', component: HomeComponent }
     ])
   ],
     providers: [AppService, NewsService, SearchService],

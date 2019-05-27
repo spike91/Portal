@@ -3,4 +3,5 @@ export interface IPostItem {
     title: string;
     text: string;
     date: Date;
+    author: string;
 }

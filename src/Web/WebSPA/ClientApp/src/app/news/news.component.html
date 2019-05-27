@@ -2,17 +2,80 @@
   news works!
 </p>
 <div class="container">
-    <div *ngIf="news?.data.length > 0">
-        <div class="row">
-            <div class="col-md-4"
-                 *ngFor="let item of news?.data">
-                <div>
-                    <span>{{item.title}}</span>
+    <div class="row">
+        <div class="col-lg-8 offset-2">
+            <div *ngIf="newsItemsObservable | async" class="row justify-content-center">
+                <div class="col-12">
+                        <table class="table">
+                            <tbody>
+                                <tr *ngFor="let item of newsItemsObservable | async">
+                                    <td style="border-top:none">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title" style="font-weight:500;margin-bottom:0px;"><span><a [routerLink]="['/news/description', item.id]" style="color:#635252">{{item.title}}</a></span></h5>
+                                                <h6 style="font-family:cursive;font-size:13px;"><span>{{item.date | date}} {{item.author}}</span></h6>
+                                                <p class="card-text">{{item.text}}</p>
+                                                <!--<a href="#" class="btn btn-light">Go detail</a>-->
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                </div>
+            </div>
+            <div class="row justify-content-center" style="margin-bottom:30px;">
+                <div class="col-3">
+                    <div class="btn-group dropup" style="margin-left:15px;">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Sort By: {{sortBy}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item" (click)="sortByChanged('date')">Date</button>
+                            <button class="dropdown-item" (click)="sortByChanged('title')">Title</button>
+                            <button class="dropdown-item" (click)="sortByChanged('author')">Author</button>
+                            <button class="dropdown-item" (click)="sortByChanged('source')">Source</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+
+                    <div *ngIf="newsItems?.length == 0">
+                        <span>THERE ARE NO RESULTS THAT MATCH YOUR SEARCH</span>
+                    </div>
+                    <div>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <button class="page-link" tabindex="-1">Previous</button>
+                            </li>
+                            <li class="page-item"><button class="page-link">1</button></li>
+                            <li class="page-item"><button class="page-link">2</button></li>
+                            <li class="page-item"><button class="page-link">3</button></li>
+                            <li class="page-item">
+                                <button class="page-link">Next</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="btn-group dropup" style="margin-left:35px;">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Items: {{itemCount}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item" (click)="itemCountChanged(10)">10</button>
+                            <button class="dropdown-item" (click)="itemCountChanged(20)">20</button>
+                            <button class="dropdown-item" (click)="itemCountChanged(50)">50</button>
+                            <button class="dropdown-item" (click)="itemCountChanged(100)">100</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div *ngIf="newsItems?.length == 0">
-        <span>THERE ARE NO RESULTS THAT MATCH YOUR SEARCH</span>
-    </div>
+    
+
+
+
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef,EventEmitter,Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DataService } from '../shared/services/data.service';
 import { SearchService } from '../shared/services/search.service';
 import { IPostItem } from '../shared/models/postItem.model';
@@ -30,12 +30,13 @@ export class SearchBarComponent implements OnInit {
 
     onSubmit(f) {
         let title = (<HTMLInputElement>document.getElementById('search')).value;
-        (<HTMLInputElement>document.getElementById('search')).value = "";
-        this.goToNewsPage(title);
+        if (typeof (title) == 'string' && title.length >= 3) {
+            (<HTMLInputElement>document.getElementById('search')).value = "";
+            this.searchChanged(title);
+        }
     }
 
     searchChanged(value) {
-        (<HTMLInputElement>document.getElementById('search')).value = "";
         this.goToNewsPage(value);
         //this.news = { pageIndex: 0, pageSize: 0, data: [{ id: 1, title: 'test', text: 'test' } as IPostItem], count: 1 } as IPost;
         //this.newsOutput.emit(this.news);
@@ -51,7 +52,7 @@ export class SearchBarComponent implements OnInit {
 
     goToNewsPage(title) {
         //this.router.navigate(['/news', { title: title }]);
-        this.router.navigate(['/news', title], { skipLocationChange: true });
+        this.router.navigate(['/news/search', title]);
     }
 
 }

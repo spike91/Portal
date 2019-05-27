@@ -1,0 +1,31 @@
+<p>
+  news-detail works!
+</p>
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <a [routerLink]="['../']">
+                <span class="fas fa-arrow-circle-left" style="font-size:40px;color:#e65c43"></span>
+            </a>
+        </div>
+        <div class="col-8">
+            <div class="row" style="font-size:24px;font-weight:500;">
+                <div class="col-12" style="text-align:left;">
+                    <span> {{post?.title}}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top:-5px;font-family:'Open Sans', sans-serif;font-style: italic">
+                <div class="col-12" style="text-align:left;">
+                    <span>Date - {{post?.date | date:'dd-MM-yyyy'}}</span>
+                    <span>{{post?.author}}</span>
+                </div>
+            </div>
+            <div class="row" style="padding-top:40px;">
+                <div class="col-12" style="text-align:left;">
+                    <span>{{post?.text}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>

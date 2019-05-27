@@ -3,6 +3,7 @@ import { Response } from '@angular/http';
 import { DataService } from '../shared/services/data.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { IPost } from '../shared/models/post.model';
+import { IPostItem } from '../shared/models/postItem.model';
 
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
@@ -34,6 +35,19 @@ export class NewsService {
         let url = this.newsUrl;
 
         url = url + '?pageSize=' + pageSize + '&pageIndex=' + pageIndex + '&title=' + title;
+
+        return this.service.get(url)
+            .pipe(
+                map((response: any) => {
+                    return response;
+                })
+            );
+    }
+
+    getNewsById(id: number): Observable<IPostItem> {
+        let url = this.newsUrl;
+
+        url = url + 'find/?id=' + id;
 
         return this.service.get(url)
             .pipe(
