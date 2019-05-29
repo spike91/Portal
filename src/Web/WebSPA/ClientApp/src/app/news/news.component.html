@@ -4,24 +4,28 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 offset-2">
-            <div *ngIf="newsItemsObservable | async" class="row justify-content-center">
+
+            <div *ngIf="news?.data.length == 0 && title != null" class="row">
+                <span>THERE ARE NO RESULTS THAT MATCH YOUR SEARCH</span>
+            </div>
+            <div *ngIf="news?.data.length > 0" class="row justify-content-center">
                 <div class="col-12">
-                        <table class="table">
-                            <tbody>
-                                <tr *ngFor="let item of newsItemsObservable | async">
-                                    <td style="border-top:none">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="card-title" style="font-weight:500;margin-bottom:0px;"><span><a [routerLink]="['/news/description', item.id]" style="color:#635252">{{item.title}}</a></span></h5>
-                                                <h6 style="font-family:cursive;font-size:13px;"><span>{{item.date | date}} {{item.author}}</span></h6>
-                                                <p class="card-text">{{item.text}}</p>
-                                                <!--<a href="#" class="btn btn-light">Go detail</a>-->
-                                            </div>
+                    <table class="table">
+                        <tbody>
+                            <tr *ngFor="let item of news?.data">
+                                <td style="border-top:none">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title" style="font-weight:500;margin-bottom:0px;"><span><a [routerLink]="['/news/description', item.id]" style="color:#635252">{{item.title}}</a></span></h5>
+                                            <h6 style="font-family:cursive;font-size:13px;"><span>{{item.date | date}} {{item.author}}</span></h6>
+                                            <p class="card-text">{{item.text}}</p>
+                                            <!--<a href="#" class="btn btn-light">Go detail</a>-->
                                         </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                 </div>
             </div>
@@ -40,20 +44,21 @@
                     </div>
                 </div>
                 <div class="col-6">
-
-                    <div *ngIf="newsItems?.length == 0">
-                        <span>THERE ARE NO RESULTS THAT MATCH YOUR SEARCH</span>
-                    </div>
                     <div>
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <button class="page-link" tabindex="-1">Previous</button>
+                            <li [ngClass]="activePage > 1 ? 'page-item' : 'page-item disabled'">
+                                <button class="page-link" tabindex="-1" (click)="goPrevPage()">Previous</button>
                             </li>
-                            <li class="page-item"><button class="page-link">1</button></li>
-                            <li class="page-item"><button class="page-link">2</button></li>
-                            <li class="page-item"><button class="page-link">3</button></li>
-                            <li class="page-item">
-                                <button class="page-link">Next</button>
+                            <li [ngClass]="activePage == 1 ? 'page-item disabled' : 'page-item'" *ngIf="pageCount > 0"><button class="page-link" (click)="activePageChanged(-2)">{{activePage}}</button></li>
+                            <li [ngClass]="activePage == 2 ? 'page-item disabled' : 'page-item'" *ngIf="pageCount > 1"><button class="page-link" (click)="activePageChanged(-1)">{{activePage + 1}}</button></li>
+                            <li [ngClass]="activePage > pageCount ? 'page-item disabled' : 'page-item'" *ngIf="pageCount > 2"><button class="page-link" (click)="activePageChanged(0)">{{activePage + 2}}</button></li>
+                            <li [ngClass]="pageCount > 1 && activePage == pageCount - 2 ? 'page-item disabled' : 'page-item'" *ngIf="pageCount > 3"><button class="page-link" (click)="activePageChanged(1)">{{activePage + 3}}</button></li>
+                            <li [ngClass]="pageCount > 0 && activePage == pageCount - 1 ? 'page-item disabled active' : 'page-item'" *ngIf="pageCount > 4"><button class="page-link" (click)="activePageChanged(2)">{{activePage + 4}}</button></li>
+                            <li [ngClass]="activePage < pageCount ? 'page-item' : 'page-item disabled'">
+                                <button class="page-link" (click)="goNextPage()">Next</button>
+                            </li>
+                            <li [ngClass]="'page-item disabled'">
+                                <button class="page-link">{{pageCount}}</button>
                             </li>
                         </ul>
                     </div>

@@ -15,8 +15,13 @@ import { IPostItem } from '../shared/models/postItem.model';
   styleUrls: ['./news.component.css']
 })
 export class NewsComponent implements OnInit {
+    hasNextPage: boolean;
     sortBy: string;
     itemCount: number;
+    pageCount: number;
+    activePage: number;
+    prevPage: number;
+    nextPage: number;
     notFound: string;
     searchTitle: string;
     news: IPost;
@@ -30,6 +35,9 @@ export class NewsComponent implements OnInit {
         //configurationService.load();
         this.sortBy = 'date';
         this.itemCount = 10;
+        this.hasNextPage = true;
+        this.activePage = 0;
+        this.pageCount = 10;
     }
 
     ngOnInit() {
@@ -39,30 +47,58 @@ export class NewsComponent implements OnInit {
         else
             this.configurationService.settingsLoaded$.subscribe(x => {
                 this.loadData();
-            });
-        //this.loadData();
-
-        this.route.paramMap.subscribe(paramMap => {
-            this.searchTitle = paramMap.get("title");
-            if (typeof this.searchTitle == 'string')
-                this.getNewsByTitle(this.searchTitle, 10, 0);        
-        });
+            });        
     }
 
     loadData() {
-        this.getNews(20, 0);
+        this.route.paramMap.subscribe(paramMap => {
+            this.searchTitle = paramMap.get("title");
+            console.log(this.searchTitle);
+
+            if (typeof this.searchTitle == 'string')
+                this.loadNews(this.searchTitle, this.itemCount, this.activePage);
+            else
+                this.loadNews(null, this.itemCount, this.activePage);
+        });
     }
 
     sortByChanged(val: string) {
         this.sortBy = val;
+        console.log('sort by: ' + this.sortBy);
     }
 
     itemCountChanged(val: number) {
         this.itemCount = val;
+        console.log('item count: ' + this.itemCount);
+    }
+
+    activePageChanged(event) {
+        console.log(event);
+        //this.activePage += 0;
+        //this.prevPage = this.activePage - 1;
+        //this.nextPage = this.activePage + 1;
+        //console.log('active page: ' + this.activePage);
+    }
+
+    goNextPage() {
+        console.log(this.news.count / this.news.pageSize);
+        if (this.hasNextPage) {
+            console.log('next page: ' + this.activePage);
+            this.loadNews(this.searchTitle, this.itemCount, ++this.activePage);
+        }
+    }
+
+    goPrevPage() {
+        if (this.news != null && this.activePage > 0) {
+            console.log('prev page: ' + this.activePage);
+            this.loadNews(this.searchTitle, this.itemCount, --this.activePage);
+        }
     }
 
     loadNews(title: string, pageSize: number, pageIndex: number) {
-
+        this.getNewsByTitle(title, pageSize, pageIndex).subscribe((data: IPost) => {
+            this.news = data;
+        });
     }
 
     getNewsByTitle(title: string, pageSize: number, pageIndex: number) {
@@ -73,6 +109,28 @@ export class NewsComponent implements OnInit {
         //        this.news = data;
         //        this.newsItems = data.data;
         //    });
+
+        let items = [
+            { id: 1, date: new Date('05-05-2019'), title: 'Title 1', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 2, date: new Date('05-05-2019'), title: 'Title 2', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 3, date: new Date('05-05-2019'), title: 'Title 3', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 4, date: new Date('05-05-2019'), title: 'Title 4', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 5, date: new Date('05-05-2019'), title: 'Title 5', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 6, date: new Date('05-05-2019'), title: 'Title 6', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 7, date: new Date('05-05-2019'), title: 'Title 7', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 8, date: new Date('05-05-2019'), title: 'Title 8', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 9, date: new Date('05-05-2019'), title: 'Title 9', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
+            { id: 10, date: new Date('05-05-2019'), title: 'Title 10', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem
+
+        ];      
+
+        let found = items.filter(it => title == null || title != null && it.title.includes(title));
+        
+        return new Observable<IPost>(observer => {
+            setTimeout(() => {
+                observer.next({ data: found, count: 10, pageIndex: 0, pageSize: 20 } as IPost);
+            }, 1000);
+        });
     }
 
     getNews(pageSize: number, pageIndex: number) {
@@ -90,23 +148,8 @@ export class NewsComponent implements OnInit {
         //        //    items: catalog.pageSize
         //        //};
         //    });
-        
-        let items = [
-            { id: 1, date: new Date('05-05-2019'), title: 'Title 1', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 2, date: new Date('05-05-2019'), title: 'Title 2', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 3, date: new Date('05-05-2019'), title: 'Title 3', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 4, date: new Date('05-05-2019'), title: 'Title 4', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 5, date: new Date('05-05-2019'), title: 'Title 5', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 6, date: new Date('05-05-2019'), title: 'Title 6', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 7, date: new Date('05-05-2019'), title: 'Title 7', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 8, date: new Date('05-05-2019'), title: 'Title 8', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 9, date: new Date('05-05-2019'), title: 'Title 9', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem,
-            { id: 10, date: new Date('05-05-2019'), title: 'Title 10', text: 'Some text.....', author: 'Firstname Lastname' } as IPostItem
 
-        ];
-
-        this.newsItemsObservable = from([items]);
-        this.news = { data: items, count: 1, pageIndex: 0, pageSize: 20 } as IPost;
+        return this.getNewsByTitle(null, 10, 0);
     }
 
     private handleError(error: any) {
